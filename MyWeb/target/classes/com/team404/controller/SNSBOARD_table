@@ -1,0 +1,14 @@
+create table snsboard(
+    bno number(10,0),
+    writer varchar2(50) not null,--글쓴이
+    uploadpath varchar2(100) not null,--업로드경로
+    fileloca varchar2(50) not null,--날짜파일
+    filename varchar2(50) not null,--변경해서 저장할 파일이름
+    filerealname varchar2(50) not null,--파일 변경하기 전 파일이름
+    content varchar2(2000),
+    regdate date DEFAULT sysdate
+);
+
+alter table snsboard add CONSTRAINT snsboard_bno_pk PRIMARY key (bno);
+
+create sequence snsboard_seq;

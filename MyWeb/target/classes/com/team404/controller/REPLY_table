@@ -1,0 +1,13 @@
+create table freereply (
+rno number(10,0), 
+bno number(10,0), 
+reply varchar2(1000), 
+replyId varchar2(50), 
+replyPw varchar2(50), 
+replydate date default sysdate, 
+updatedate date default sysdate
+); 
+create SEQUENCE freereply_seq; 
+alter table freereply add CONSTRAINT freereply_rno_pk PRIMARY KEY (rno);
+
+select * from freereply;

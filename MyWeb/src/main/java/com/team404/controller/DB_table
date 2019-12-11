@@ -1,0 +1,12 @@
+	 create table freeboard( 
+    bno number(10,0),
+    title varchar(200) not null,
+    content varchar2(2000) not null,
+    writer varchar2(50) not null,
+    regdate date DEFAULT sysdate,
+    updatedate date DEFAULT sysdate
+);
+
+alter table freeboard add CONSTRAINT freeboard_pk PRIMARY key (bno);
+
+create SEQUENCE freeboard_seq;
