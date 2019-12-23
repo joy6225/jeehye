@@ -28,9 +28,20 @@
 				<li><a href="#">강의</a></li>
                                 <li><a href="#">Form</a></li>
                                 <li><a href="#">Board</a></li>
- 				-->
+ 				-->			
 
                             </ul>
+                            
+                                                       <ul class="nav navbar-nav navbar">
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">SNS</a>
+                                    <ul class="dropdown-menu">
+        	                                <li><a href="${pageContext.request.contextPath }/snsBoard/snsList">sns</a></li>
+<%--             	                            <li><a href="${pageContext.request.contextPath }/user/userLogin">Login</a></li> --%>
+                                    </ul>
+                                </li>
+                            </ul>
+                            
                             <ul class="nav navbar-nav navbar-right">
                                 <li class="dropdown">
                                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">로그인

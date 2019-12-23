@@ -18,6 +18,11 @@
 <script
 	src="${pageContext.request.contextPath }/resources/js/bootstrap.js"></script>
 <style type="text/css">
+
+.title a{
+float:right;
+}
+
 section {
 	margin-top: 70px;
 }
@@ -195,14 +200,23 @@ ul.nav li.drophover:hover>ul.dropdown-menu {
 				<aside class="col-sm-2">
 					<div class="aside-inner">
 						<div class="menu1">
+						<c:choose>
+						<c:when test="${sessionScope.user_id != null }">
 							<p>
-								<img src="../resources/img/profile.png">임지혜
+								<img src="../resources/img/profile.png">${userVO.userName }
 							</p>
 							<ul>
 								<li>내정보</li>
 								<li>내쿠폰</li>
 								<li>내좋아요게시물</li>
 							</ul>
+						</c:when>
+						<c:otherwise>
+						<button type="button" class="btn btn-info" onclick="location.href=''">
+							로그인
+						</button>
+						</c:otherwise>
+						</c:choose>
 						</div>
 						<div class="menu2">
 							<p>둘러보기</p>
@@ -398,6 +412,7 @@ ul.nav li.drophover:hover>ul.dropdown-menu {
 								str += "<div class='title'>";
 								str +="<p>"+data[i].writer+"</p>";
 								str +="<small>"+timeStamp(data[i].regdate)+"</small>";
+								str += "<a href='download?fileLoca="+data[i].fileLoca+"&fileName="+data[i].fileName+"'>다운로드</a>"
 								str += "</div>";
 								str += "</div>";
 								str += "<div class='content-inner'>";
@@ -405,7 +420,9 @@ ul.nav li.drophover:hover>ul.dropdown-menu {
 								str += "<p>"+data[i].content+"</p>";
 								str += "</div>";
 								str += "<div class='image-inner'>";
+								str+= "<a href='"+data[i].bno+"'>";//a링크 추가
 								str+="<img src='view?fileLoca="+data[i].fileLoca+"&fileName="+data[i].fileName+"'>";						
+								str+="</a>";//a링크 추가
 								str += "</div>";
 								str += "<div class='like-inner'>";
 								<!--좋아요-->
@@ -415,12 +432,63 @@ ul.nav li.drophover:hover>ul.dropdown-menu {
 								str += "<div class='link-inner'>";
 								str += "<a href='##'><i class='glyphicon glyphicon-thumbs-up'></i>좋아요</a>";
 								str += "<a href='##'><i class='glyphicon glyphicon-comment'></i>댓글달기</a>";
-								str += "<a href='delete?bno="+data[i].bno+"'><i class='glyphicon glyphicon-remove'></i>삭제하기</a>";
+								str += "<a href='"+data[i].bno+"'id=delBtn><i class='glyphicon glyphicon-remove'></i>삭제하기</a>";
 								str += "</div>";
 						}
 						$("#contentDiv").html(str);
 				})
 			}
+			//이벤트더블링, 이벤트 위임
+			//부모에게 이벤트를 걸어놓았을 때 자식에게 위임(자식 클릭시  이벤트 실행됨)
+			//제이쿼리 이벤트위임함수on (이벤트종류, 자식선택자, 실행시킬 함수)
+ 			$("#contentDiv").on("click",".image-inner a",function(event){
+				event.preventDefault();//a링크의 이벤트전파를 중단
+				//console.log($(this).attr("href"));
+				var bno = $(this).attr("href");
+				$.getJSON("getDetail/"+bno,
+						function(data){
+							var img ="";
+							//1. 모달창에 img태그에 이미지 경로 처리
+							//2. 글쓴이 처리
+							//3. 날짜처리
+							//4. 내용처리
+							//5. 모달오픈
+							console.log(data);
+								$('#snsModal').modal('show');
+								$("#snsImg").attr("src","view?fileLoca="+data.fileLoca+"&fileName="+data.fileName)
+								$("#snsWriter").html(data.writer)
+								$("#snsRegdate").html(timeStamp(data.regdate))
+								$("#snsContent").html(data.content)
+					}
+				
+				)
+			})
+			
+			//삭제기능
+ 			$("#contentDiv").on("click","#delBtn", function(){
+ 				event.preventDefault();//a태그의 이벤트 전파 중단
+				//console.log(event.target);
+				//console.log($(this)[0]);//어디에 이벤트가 걸렸나 확인 중요
+				var bno = $(this).attr("href");
+				$.ajax({
+					type:"delete",
+					url:"delete/"+bno,
+					success:function(result){
+						if(result== 'noAuth'){
+							alert("권한이 없습니다");
+						}else if(result == 'fail'){
+							alert("삭제에 실패했습니다");
+						}else{
+							alert("게시물이 정상적으로 삭제되었습니다");
+							getList(true);
+						}
+					},
+					error:function(result){
+						alert("삭제에 실패했습니다.다시 시도해주세요");
+					}
+				})
+			}) 
+				
 			
 			function timeStamp(millis){
 				//var millis = 1575448378000;

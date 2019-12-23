@@ -33,9 +33,16 @@ public class SnsBoardServiceImpl implements SnsBoardService{
 		return vo;
 	}
 
+	//내꺼
+	 @Override
+	 public int delete(int bno) {
+		 return snsMapper.delete(bno); 
+		 }
+	 
+
 	@Override
-	public int delete(int bno) {
-		return snsMapper.delete(bno);
+	public SnsBoardVO getDetail(int bno) {
+		return snsMapper.getDetail(bno);
 	}
 
 }

@@ -8,7 +8,9 @@ public interface SnsBoardMapper {
 
 	public int insert(SnsBoardVO vo);
 	public ArrayList<SnsBoardVO> getList();
-	public int delete(int bno);
+	public int delete(int bno); //내꺼
+	public SnsBoardVO getDetail(int bno);
+
 
 
 }

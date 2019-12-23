@@ -41,6 +41,8 @@ public class UserServiceImpl implements UserService{
 		
 		return userMapper.updateForm(vo);
 	}
+
+
 	
 	
 }

@@ -14,8 +14,13 @@
 			select * from snsboard order by bno desc
 		</select>
 		
+	
 		<update id="delete">
 			delete from snsboard where bno=#{bno}
-		</update>
+		</update> 
+		
+		<select id="getDetail" resultType="SnsBoardVO">
+			select * from snsboard where bno=#{bno}
+		</select>
 		
 	</mapper>
